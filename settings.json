@@ -1,10 +1,13 @@
 {
-    "API_HASH": "a368b9003f375c414264b6701cc65e21",
-    "API_ID": 14119003,
-    "admin": [],
-    "apikey": {},
-    "author": [],
-    "kntl": [],
-    "public": true,
-    "user": {}
+    "add": "",
+    "api_hash": "a368b9003f375c414264b6701cc65e21",
+    "api_id": 14119003,
+    "author": [
+        5798851371
+    ],
+    "bot_token": "",
+    "bots": {},
+    "new": false,
+    "users": [],
+    "watermark": "@FadhilvanHalen"
 }
