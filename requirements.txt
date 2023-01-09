@@ -1,0 +1,12 @@
+httpx
+httpx[http2]
+requests
+pyrogram
+ffmpeg-python
+asyncio
+TgCrypto
+heroku3
+GitPython
+pytz
+livejson
+moviepy

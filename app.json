@@ -1,0 +1,30 @@
+{
+  "name": "SKY",
+  "description": "Telegram Bot stream video downloader.",
+  "keywords": [
+    "telegram",
+    "downloader",
+    "ffmpeg",
+    "uploader"
+  ],
+  "success_url": "https://t.me/rxyzdev_tmp",
+  "website": "https://github.com/newkanekibot/skybots",
+  "repository": "https://github.com/newkanekibot/skybots",
+  "stack": "heroku-20",
+  "env": {
+    "WEBHOOK": {
+      "description": "Setting this to ANYTHING will enable webhooks when in env mode",
+      "value": "ANYTHING"
+    }
+  },
+  "addons": [
+  ],
+  "buildpacks": [{
+    "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest"
+  }, {
+    "url": "https://github.com/verbit-ai/rtmpdump-buildpack.git"
+  }, {
+    "url": "heroku/python"
+  }
+ ]
+}
