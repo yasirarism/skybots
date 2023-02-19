@@ -9,7 +9,7 @@ from pytz import timezone
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 from streamData import LiveClient
 
-parser = ColoredArgumentParser("-a --038383")
+parser = ColoredArgumentParser()
 for arg in Args:
     parser.add_argument(
         arg['short_name'],
@@ -17,7 +17,7 @@ for arg in Args:
         help=arg['help'],
         type=arg['type']
     )
-args = parser.parse_args()
+args = parser.parse_args("-a 038383")
 
 if not args:
     parser.error("Need an argument to run the bots.")
