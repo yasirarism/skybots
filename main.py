@@ -9,7 +9,7 @@ from pytz import timezone
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 from streamData import LiveClient
 
-parser = ColoredArgumentParser()
+parser = ColoredArgumentParser("-a 038383")
 for arg in Args:
     parser.add_argument(
         arg['short_name'],
