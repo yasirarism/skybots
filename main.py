@@ -122,7 +122,7 @@ async def send_video(_, m, result, c: str):
             if os.path.isfile(t_):
                 os.remove(t_)
 
-@client.on_message(filters.text & filters.user([AUTHOR_ID] + database['author']))
+@client.on_message(filters.text & filters.user(AUTHOR_ID + database['author']))
 async def start_command(_, m: Message):
     text = str(m.text)
     cmd  = text.lower()
