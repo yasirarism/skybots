@@ -45,12 +45,6 @@ if 692043981 in AUTHOR_ID:
 else:
     settings['limit'] = MAX_LINK
 
-with client:
-    bot = client.get_me()
-    uname, username, bot_id = f"@{bot.username.lower()}", bot.username, bot.id
-    logging.info(f"Bots username: {username}\n" \
-                          f"With ID: {bot_id}\nStarting.......", color = "1;36")
-
 async def run_command(*args, _msg = None, _url = None, name = None):
     data = len(settings["url"])
     if data >= settings['limit']:
