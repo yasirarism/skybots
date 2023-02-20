@@ -5,5 +5,5 @@ moviepy
 livejson
 pytz
 argparse
-httpx
+python-dotenv
 httpx[http2]
