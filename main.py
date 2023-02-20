@@ -37,7 +37,7 @@ if isinstance(list, types.ModuleType):
 logging.info(f"Type list is: {list.__name__}")
 
 database  = json.load(open("settings.json", "r"))
-client    = Client(f"session/{SESSION_NAME}", api_id = database["api_id"], api_hash = database["api_hash"], bot_token = TOKEN)
+client    = Client(SESSION_NAME, api_id = database["api_id"], api_hash = database["api_hash"], bot_token = TOKEN)
 loop      = asyncio.get_event_loop()
 watermark = "Subscribe: @StreamingXBot" if 692043981 not in AUTHOR_ID else "Author: @FadhilvanHalen"
 if 692043981 in AUTHOR_ID:
