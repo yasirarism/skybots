@@ -10,40 +10,19 @@ from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 from streamData import LiveClient
 from os import environ
 from dotenv import load_dotenv
+import logging
 
 load_dotenv("config.env", override=True)
 
-AUTHOR_ID = environ.get("AUTHOR_ID")
+AUTHOR_ID = list({int(x) for x in environ.get("AUTHOR_ID").split()})
 SESSION_NAME = environ.get("SESSION_NAME", "skybots")
 MAX_LINK = environ.get("MAX_LINK", 4)
 TOKEN = environ.get("TOKEN")
 
-parser = ColoredArgumentParser()
-for arg in Args:
-    parser.add_argument(
-        arg['short_name'],
-        arg['long_name'],
-        help=arg['help'],
-        type=arg['type']
-    )
-args = parser.parse_args()
-
-if not args:
-    parser.error("Need an argument to run the bots.")
-elif args:
-    if not args.author_id:
-        args.author_id = AUTHOR_ID
-    elif not args.session_name:
-        args.session_name = SESSION_NAME
-    elif not args.max_link:
-        args.max_link = MAX_LINK
-    elif not args.token:
-        agrs.token = TOKEN
-
-settings = livejson.File(f"database/{args.session_name.lower()}.json", True, True, 4)
+settings = livejson.File(f"database/{SESSION_NAME.lower()}.json", True, True, 4)
 if not settings:
     settings.update({
-        "author": [args.author_id],
+        "author": AUTHOR_ID,
         "url": {},
         "limit": 0
     })
@@ -54,22 +33,22 @@ elif settings["url"]:
     
 if isinstance(list, types.ModuleType):
     del list
-    parser.msg("List deleted..")
-parser.msg(f"Type list is: {list.__name__}")
+    logging.info("List deleted..")
+logging.info(f"Type list is: {list.__name__}")
 
 database  = json.load(open("settings.json", "r"))
-client    = Client(f"session/{args.session_name}", api_id = database["api_id"], api_hash = database["api_hash"], bot_token = args.token)
+client    = Client(f"session/{SESSION_NAME}", api_id = database["api_id"], api_hash = database["api_hash"], bot_token = TOKEN)
 loop      = asyncio.get_event_loop()
-watermark = "Subscribe: @StreamingXBot" if args.author_id != 692043981 else "Author: @FadhilvanHalen"
-if args.author_id == 692043981:
+watermark = "Subscribe: @StreamingXBot" if 692043981 not in AUTHOR_ID else "Author: @FadhilvanHalen"
+if 692043981 in AUTHOR_ID:
     settings['limit'] = 999
 else:
-    settings['limit'] = args.max_link
+    settings['limit'] = MAX_LINK
 
 with client:
     bot = client.get_me()
     uname, username, bot_id = f"@{bot.username.lower()}", bot.username, bot.id
-    parser.msg(f"Bots username: {username}\n" \
+    logging.info(f"Bots username: {username}\n" \
                           f"With ID: {bot_id}\nStarting.......", color = "1;36")
 
 async def run_command(*args, _msg = None, _url = None, name = None):
@@ -149,7 +128,7 @@ async def send_video(_, m, result, c: str):
             if os.path.isfile(t_):
                 os.remove(t_)
 
-@client.on_message(filters.text & filters.user([args.author_id] + database['author']))
+@client.on_message(filters.text & filters.user([AUTHOR_ID] + database['author']))
 async def start_command(_, m: Message):
     text = str(m.text)
     cmd  = text.lower()
@@ -315,7 +294,6 @@ async def start_command(_, m: Message):
 
 async def run():
     await client.start()
-    parser.msg("Bots has been started....", color = "1;36")
     await idle()
 
 if __name__ == "__main__":
