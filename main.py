@@ -8,6 +8,15 @@ from datetime import timedelta, datetime
 from pytz import timezone
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 from streamData import LiveClient
+from os import environ
+from dotenv import load_dotenv
+
+load_dotenv("config.env", override=True)
+
+AUTHOR_ID = environ.get("AUTHOR_ID")
+SESSION_NAME = environ.get("SESSION_NAME", "skybots")
+MAX_LINK = environ.get("MAX_LINK", 4)
+TOKEN = environ.get("TOKEN")
 
 parser = ColoredArgumentParser()
 for arg in Args:
@@ -17,19 +26,19 @@ for arg in Args:
         help=arg['help'],
         type=arg['type']
     )
-args = parser.parse_args("-a 038383")
+args = parser.parse_args()
 
 if not args:
     parser.error("Need an argument to run the bots.")
 elif args:
     if not args.author_id:
-        parser.error("Argument -a --author_id are needed.")
+        args.author_id = AUTHOR_ID
     elif not args.session_name:
-        parser.error("Argument -s --session_name are needed.")
+        args.session_name = SESSION_NAME
     elif not args.max_link:
-        parser.error("Argument -m --max_link are needed.")
+        args.max_link = MAX_LINK
     elif not args.token:
-        parser.error("Argument -t --token are needed.")
+        agrs.token = TOKEN
 
 settings = livejson.File(f"database/{args.session_name.lower()}.json", True, True, 4)
 if not settings:
