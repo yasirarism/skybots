@@ -19,7 +19,7 @@ SESSION_NAME = environ.get("SESSION_NAME", "skybots")
 MAX_LINK = environ.get("MAX_LINK", 4)
 TOKEN = environ.get("TOKEN")
 
-settings = livejson.File(f"database/{SESSION_NAME.lower()}.json", True, True, 4)
+settings = livejson.File(f"database/skybots.json", True, True, 4)
 if not settings:
     settings.update({
         "author": AUTHOR_ID,
