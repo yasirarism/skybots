@@ -19,7 +19,7 @@ SESSION_NAME = environ.get("SESSION_NAME", "skybots")
 MAX_LINK = environ.get("MAX_LINK", 4)
 TOKEN = environ.get("TOKEN")
 
-settings = livejson.File(f"database/skybots.json", True, True, 4)
+settings = livejson.File("database/skybots.json", True, True, 4)
 if not settings:
     settings.update({
         "author": AUTHOR_ID,
@@ -30,7 +30,7 @@ elif settings["url"]:
     for k, v in settings["url"].items():
         if os.path.isfile(v["name"]):os.remove(v["name"])
     settings["url"] = {}
-    
+
 if isinstance(list, types.ModuleType):
     del list
     logging.info("List deleted..")
@@ -40,10 +40,7 @@ database  = json.load(open("settings.json", "r"))
 client    = Client(SESSION_NAME, api_id = database["api_id"], api_hash = database["api_hash"], bot_token = TOKEN)
 loop      = asyncio.get_event_loop()
 watermark = "Subscribe: @StreamingXBot" if 692043981 not in AUTHOR_ID else "Author: @FadhilvanHalen"
-if 692043981 in AUTHOR_ID:
-    settings['limit'] = 999
-else:
-    settings['limit'] = MAX_LINK
+settings['limit'] = 999 if 692043981 in AUTHOR_ID else MAX_LINK
 
 async def run_command(*args, _msg = None, _url = None, name = None):
     data = len(settings["url"])
@@ -66,17 +63,15 @@ async def run_command(*args, _msg = None, _url = None, name = None):
     stdout, stderr = await process.communicate()
     if process.returncode == 0:
         return (name, stdout.decode("utf-8").strip())
-    else:
-        if _url:
-            if os.path.isfile(name):
-                try:del settings["url"][_url]
-                except KeyError:pass
-                return (name, stderr.decode("utf-8").strip())
-            del settings["url"][_url]
-        if _msg:
-            return await _msg.edit("Host is already offline or link not valid.")
-        return (name, stderr.decode("utf-8").strip())
-    return (name, stdout.decode("utf-8").strip())
+    if _url:
+        if os.path.isfile(name):
+            try:del settings["url"][_url]
+            except KeyError:pass
+            return (name, stderr.decode("utf-8").strip())
+        del settings["url"][_url]
+    if _msg:
+        return await _msg.edit("Host is already offline or link not valid.")
+    return (name, stderr.decode("utf-8").strip())
 
 async def delete(m):
     try:await m.delete()
@@ -103,7 +98,7 @@ async def send_video(_, m, result, c: str):
             end += 3600
             if end > duration:
                 erm = end - duration
-                end = end - erm
+                end -= erm
         start = datetime.now(timezone("Asia/Jakarta"))
         caption = f"{watermark}\n{start.strftime('%d %b %Y')}"
         thums = []
